@@ -5,7 +5,7 @@ from jose import jwt
 
 # JWT Generation
 
-def create_access_token(data: dict, expires_minutes: int = 15, jwt_algorithm: str = 'HS256'):
+def create_access_token(data: dict, expires_minutes: int = 15, jwt_algorithm: str = 'HS256') -> str:
     to_encode = data.copy()
     
     time_now = datetime.now()

@@ -5,8 +5,8 @@ from sqlalchemy.orm import sessionmaker, relationship, declarative_base
 # from sqlalchemy.exc import IntegrityError
 from geoalchemy2 import Geometry
 
-# #Create your database
-# # engine = create_engine("sqlite:///tasks.db", echo=False)
+#Create your database
+# engine = create_engine("sqlite:///tasks.db", echo=False)
 # engine = create_engine("sqlite:///data.db", echo=False)
 
 Base = declarative_base()
@@ -31,19 +31,26 @@ class Category(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False, unique=True, index=True)
     description = Column(String, nullable=False)
-    transaction = relationship("Transactions", back_populates="category")
-    price_indices = relationship("Price Index", back_populates="category")
+    
+    # Pluralized variable name and matched back_populates to 'category'
+    transactions = relationship("Transaction", back_populates="category")
+    
+    # Matched back_populates to 'category'
+    price_indices = relationship("PriceIndex", back_populates="category")
 
 class Transaction(Base):
     __tablename__ = "transactions"
+    
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey("users.id"), index=True, nullable=False)
     category_id = Column(Integer, ForeignKey("categories.id"), index=True, nullable=False)
     amount = Column(Numeric(12,2), nullable=False)
-    mechant_name = Column(String, nullable=False)
+    merchant_name = Column(String, nullable=False) 
     date = Column(DateTime(timezone=True), nullable=False)
 
     user = relationship("User", back_populates="transactions")
+    
+    # Referenced capitalized class name "Category"
     category = relationship("Category", back_populates="transactions")
 
 class PriceIndex(Base):
@@ -54,7 +61,8 @@ class PriceIndex(Base):
     index_value = Column(Numeric(10, 4), nullable=False)
     source = Column(String, nullable=False)
 
-    category = relationship("category", back_populates="prices")
+    # Referenced capitalized class name "Category" and matched back_populates to "price_indices"
+    category = relationship("Category", back_populates="price_indices")
 
 class LocationNode(Base):
     __tablename__ = "location_node"

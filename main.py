@@ -3,6 +3,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 
+# Plaid api integration
+from routers import plaid_api, substitution
+
 # Database Imports
 from databases.database import get_db, init_db
 from databases.models import User
@@ -11,7 +14,9 @@ from databases.models import User
 from security.password_encryption import hash_password, verify_password
 from security.jwt_generation import create_access_token
 
-app = FastAPI(title="HyperTrend API")
+app = FastAPI(title="HyperTrend API") # "hypertrend??"
+
+app.include_router(substitution.router, prefix="/api/engine", tags=["Substitution"]) #substitution.py
 
 app.add_middleware(
     CORSMiddleware,

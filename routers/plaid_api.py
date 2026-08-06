@@ -11,7 +11,6 @@ from config import settings
 
 router = APIRouter()
 
-# 1. Configure the Plaid Client
 host = plaid.Environment.Sandbox if settings.PLAID_ENV == "sandbox" else plaid.Environment.Production
 configuration = plaid.Configuration(
     host=host,
